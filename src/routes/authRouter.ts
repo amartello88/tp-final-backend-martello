@@ -1,9 +1,9 @@
 import { Router } from "express"
-import { login, register } from "../controllers/auth.controller"
+import { loginUserController, registerUserController } from "../controllers/userController"
 
 const authRouter = Router()
 
-authRouter.post("/register", register)
-authRouter.post("/login", login)
+authRouter.post("/register", registerUserController)
+authRouter.post("/login", loginUserController)
 
 export { authRouter }

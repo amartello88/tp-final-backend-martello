@@ -4,13 +4,15 @@ import mongoose from "mongoose"
 // como defina un producto es como lo voy a manipular
 const ProductSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  price: { type: Number, default: 0 },
-  stock: { type: Number, default: 0 },
+  price: { type: Number, min: 0, default: 0 },
+  stock: { type: Number, min: 0, default: 0 },
   description: { type: String, default: "Sin descripción" },
-  category: { type: String, default: "Sin categoria" }
+  category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" }
 }, {
-  versionKey: false
-})
+  versionKey: false,
+  timestamps: true
+});
+
 
 const Product = mongoose.model("Product", ProductSchema)
 

@@ -1,40 +1,26 @@
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
-import { NextFunction, Request, Response } from "express"
-import { IPayload } from "../interfaces/IPayload"
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { IPayload } from "../interfaces/IPayload";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const header = req.headers.authorization
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
 
-  const JWT_SECRET = process.env.JWT_SECRET
-
-  if (!header) {
-    return res.status(401).json({ success: false, error: "el token es requerido" })
+  if (!authHeader) {
+    return res.status(401).json({ message: "Token no proporcionado" });
   }
 
-  if (!header.startsWith("Bearer")) {
-    return res.status(401).json({ success: false, error: "el token debe ser formato jwt" })
-  }
+  const token = authHeader.split(" ")[1];
 
-  const array = header.split(" ")
-
-  const token = array[1]
-
-
-  if (!token) {
-    return res.status(401).json({ success: false, error: "token invalido" })
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET no está definido en .env");
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET)
-
-    req.user = payload as IPayload
-
-    next()
+    const secret = process.env.JWT_SECRET as string;
+    const decoded = jwt.verify(token, secret) as unknown as IPayload;
+    (req as any).user = decoded;
+    next();
   } catch (error) {
-    const err = error as Error
-    res.status(500).json({ success: false, error: err.message })
+    return res.status(401).json({ message: "Token inválido", error });
   }
-}
-
-export { authMiddleware }
+};

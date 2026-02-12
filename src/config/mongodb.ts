@@ -2,7 +2,7 @@ import { connect } from "mongoose"
 import dotenv from "dotenv"
 dotenv.config()
 
-const URI_DB = process.env.URI_DB
+const URI_DB = process.env.MONGO_URI;
 
 if (!URI_DB) {
   throw new Error("Debes ingresar una URI valida.")
