@@ -238,7 +238,7 @@
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || 'Error al registrarse');
       showMsg('auth-msg', '¡Cuenta creada! Ahora podés iniciar sesión', 'success');
-      switchTab('login');
+      setTimeout(() => switchTab('login'), 2000);
     } catch (e) { showMsg('auth-msg', e.message, 'error'); }
   }
   function logout() {
