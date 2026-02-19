@@ -14,7 +14,6 @@ const createProductController = async (req: Request, res: Response) => {
     if (!result.success) {
       return res.status(400).json({ success: false, errors: result.error.issues });
     }
-
     const product = await createProduct(result.data);
     res.status(201).json(product);
   } catch (error) {
@@ -22,9 +21,16 @@ const createProductController = async (req: Request, res: Response) => {
   }
 };
 
-const getProductsController = async (_req: Request, res: Response) => {
+const getProductsController = async (req: Request, res: Response) => {
   try {
-    const products = await getProducts();
+    const { minPrice, maxPrice, name } = req.query;
+
+    const products = await getProducts({
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      name: name as string | undefined,
+    });
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener productos", error });
@@ -47,7 +53,6 @@ const updateProductController = async (req: Request, res: Response) => {
     if (!result.success) {
       return res.status(400).json({ success: false, errors: result.error.issues });
     }
-
     const product = await updateProduct(req.params.id as string, result.data);
     if (!product) return res.status(404).json({ message: "Producto no encontrado" });
     res.json(product);
