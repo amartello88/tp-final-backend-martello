@@ -258,6 +258,47 @@
           "response": []
         },
         {
+  "name": "Filtrar Productos por Query Params",
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{token}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{base_url}}/products?minPrice=1000&maxPrice=5000&name=zapatilla",
+      "host": ["{{base_url}}"],
+      "path": ["products"],
+      "query": [
+        {
+          "key": "minPrice",
+          "value": "1000",
+          "description": "Precio mínimo"
+        },
+        {
+          "key": "maxPrice",
+          "value": "5000",
+          "description": "Precio máximo"
+        },
+        {
+          "key": "name",
+          "value": "zapatilla",
+          "description": "Nombre o parte del nombre del producto"
+        }
+      ]
+    },
+    "description": "Filtra productos por precio mínimo, precio máximo y/o nombre. Requiere token JWT."
+  },
+  "response": []
+},
+        {
           "name": "Obtener Producto por ID",
           "request": {
             "auth": {
