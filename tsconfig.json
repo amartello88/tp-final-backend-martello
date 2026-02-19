@@ -7,9 +7,8 @@
     "outDir": "./dist",
     "noImplicitAny": true,
     "strict": true,
-    "resolveJsonModule": true,
-    "types": ["node"]
+    "resolveJsonModule": true
   },
-  "include": ["src", "env.d.ts"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
