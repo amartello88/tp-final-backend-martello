@@ -8,8 +8,18 @@ const createProduct = async (data: any) => {
 };
 
 // Listar todos los productos
-const getProducts = async () => {
-  return await Product.find().populate("category");
+const getProducts = async (filters?: {
+  minPrice?: number;
+  maxPrice?: number;
+  name?: string;
+}) => {
+  const query: any = {};
+
+  if (filters?.minPrice !== undefined) query.price = { ...query.price, $gte: filters.minPrice };
+  if (filters?.maxPrice !== undefined) query.price = { ...query.price, $lte: filters.maxPrice };
+  if (filters?.name) query.name = { $regex: filters.name, $options: "i" };
+
+  return await Product.find(query).populate("category");
 };
 
 // Buscar producto por ID
